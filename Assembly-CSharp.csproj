@@ -64,6 +64,11 @@
     <Compile Include="Assets\Chibi Mummy\Misc\Scripts\CharMovement.cs" />
     <Compile Include="Assets\gameControl.cs" />
     <Compile Include="Assets\hintword.cs" />
+    <Compile Include="Assets\MagicMirror\Demo\DemoScript.cs" />
+    <Compile Include="Assets\MagicMirror\Prefab\MirrorCameraScript.cs" />
+    <Compile Include="Assets\MagicMirror\Prefab\MirrorReflectionScript.cs" />
+    <Compile Include="Assets\MagicMirror\Prefab\MirrorScript.cs" />
+    <Compile Include="Assets\mirrorCamera.cs" />
     <Compile Include="Assets\PlayerController.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\MenuSceneLoader.cs" />
     <Compile Include="Assets\SampleScenes\Menu\Scripts\PauseMenu.cs" />
@@ -76,9 +81,13 @@
     <Compile Include="Assets\Supercyan Character Pack Zombie Sample\Scripts\ZombieCameraLogic.cs" />
     <Compile Include="Assets\Supercyan Character Pack Zombie Sample\Scripts\ZombieCharacterControl.cs" />
     <Compile Include="Assets\Supercyan Character Pack Zombie Sample\Scripts\ZombieFree.cs" />
+    <None Include="Assets\MagicMirror\Prefab\MirrorShaderOld.shader" />
     <None Include="Assets\Day-Night Skyboxes\readme.txt" />
+    <None Include="Assets\MagicMirror\Prefab\MirrorShaderBumpMap.shader" />
+    <None Include="Assets\MagicMirror\Prefab\Readme.txt" />
     <None Include="Assets\Day-Night Skyboxes\Textures\Readme for Assigning.txt" />
     <None Include="Assets\Chibi Mummy\readme.txt" />
+    <None Include="Assets\MagicMirror\Prefab\MirrorShader.shader" />
     <None Include="Assets\SampleScenes\Shaders\Skybox-Procedural.shader" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>C:/Users/User/Documents/GP_B10515011_HW1/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
