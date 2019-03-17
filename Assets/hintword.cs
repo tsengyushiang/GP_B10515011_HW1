@@ -5,4 +5,5 @@ using UnityEngine;
 public class hintword : MonoBehaviour
 {
     public string hintWord = "";
+    public string action = "";
 }

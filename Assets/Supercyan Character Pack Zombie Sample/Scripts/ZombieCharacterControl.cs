@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class ZombieCharacterControl : MonoBehaviour
-{   
+{
     public Text HintText;
+    private bool movealbe = true;
     private enum ControlMode
     {
         Tank,
         Direct
     }
+    public GameObject Axe;
 
     [SerializeField] private float m_moveSpeed = 2;
     [SerializeField] private float m_turnSpeed = 200;
@@ -28,26 +30,34 @@ public class ZombieCharacterControl : MonoBehaviour
 
     void Awake()
     {
-        if(!m_animator) { gameObject.GetComponent<Animator>(); }
-        if(!m_rigidBody) { gameObject.GetComponent<Animator>(); }
+        if (!m_animator) { gameObject.GetComponent<Animator>(); }
+        if (!m_rigidBody) { gameObject.GetComponent<Animator>(); }
+        Axe.SetActive(false);
     }
 
-    void dead() {
+    public void dead() {
+        if (movealbe == false) return;
         transform.Find("deadLight").gameObject.SetActive(true);
         m_animator.Play("zombie_death_standing");
+        movealbe = false;
+        HintText.text = "GAMEOVER";
+        GetComponent<AudioSource>().Play();
     }
 
-	void FixedUpdate ()
+    void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            m_animator.Play("zombie_attack");
-        }
+        if (movealbe == false) return;
         if (transform.position.y < 1)
         {
             dead();
             return;
         }
-        switch(m_controlMode)
+        if (Input.GetKey(KeyCode.Space))
+        {
+            m_animator.Play("zombie_attack");
+        }
+
+        switch (m_controlMode)
         {
             case ControlMode.Direct:
                 DirectUpdate();
@@ -93,7 +103,7 @@ public class ZombieCharacterControl : MonoBehaviour
         direction.y = 0;
         direction = direction.normalized * directionLength;
 
-        if(direction != Vector3.zero)
+        if (direction != Vector3.zero)
         {
             m_currentDirection = Vector3.Slerp(m_currentDirection, direction, Time.deltaTime * m_interpolation);
 
@@ -102,15 +112,20 @@ public class ZombieCharacterControl : MonoBehaviour
 
             m_animator.SetFloat("MoveSpeed", direction.magnitude);
         }
-    }
+    }  
 
-
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
+        if (movealbe == false) return;
         hintword TouchWord = other.gameObject.GetComponent<hintword>();
 
         if (TouchWord != null) {
-            HintText.text = TouchWord.hintWord;
+            HintText.text = TouchWord.hintWord;            
+        }
+        if (other.gameObject.name == "GetAxe") {
+            Destroy(other.gameObject);
+            Axe.SetActive(true);
+            transform.GetChild(0).GetComponent<AudioSource>().Play();
         }
     }
 
@@ -118,7 +133,11 @@ public class ZombieCharacterControl : MonoBehaviour
     {
         hintword TouchWord = other.gameObject.GetComponent<hintword>();
 
-        if (TouchWord != null)
+        if (other.gameObject.name == "GetAxe")
+        {
+            return;
+        }
+        else if (TouchWord != null)
         {
             HintText.text = "";
         }
