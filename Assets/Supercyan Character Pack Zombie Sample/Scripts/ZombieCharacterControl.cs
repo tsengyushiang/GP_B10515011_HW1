@@ -33,16 +33,21 @@ public class ZombieCharacterControl : MonoBehaviour
         if (!m_animator) { gameObject.GetComponent<Animator>(); }
         if (!m_rigidBody) { gameObject.GetComponent<Animator>(); }
         Axe.SetActive(false);
+      
     }
 
     public void dead() {
         if (movealbe == false) return;
         transform.Find("deadLight").gameObject.SetActive(true);
+        transform.Find("deadCamera").forward = transform.Find("MainCamera").forward;
+        GetComponent<Animator>().Play("camera switch");        
+       
         m_animator.Play("zombie_death_standing");
         movealbe = false;
         HintText.text = "GAMEOVER";
         GetComponent<AudioSource>().Play();
     }
+
 
     void FixedUpdate()
     {
@@ -114,13 +119,18 @@ public class ZombieCharacterControl : MonoBehaviour
         }
     }  
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (movealbe == false) return;
         hintword TouchWord = other.gameObject.GetComponent<hintword>();
 
         if (TouchWord != null) {
-            HintText.text = TouchWord.hintWord;            
+            
+            if (TouchWord.hintWord == "MISSION COMPLETED !!" && HintText.text != "MISSION COMPLETED !!") {
+               GameObject.Find("GameController").gameObject.GetComponent<MonoBehaviour>().CancelInvoke();
+                transform.Find("win").GetComponent<AudioSource>().Play();
+            }
+            HintText.text = TouchWord.hintWord;
         }
         if (other.gameObject.name == "GetAxe") {
             Destroy(other.gameObject);

@@ -35,6 +35,7 @@ public class gameControl : MonoBehaviour
         RemainTime = TotalTime;
         timerSlider.fillAmount = (float)RemainTime/ TotalTime;
         InvokeRepeating("TimerCountDown", 1f, 1f);
+  
     }
 
     // Update is called once per frame

@@ -3,23 +3,39 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed = 6.0F;
-    public float jumpSpeed = 8.0F;
-    public float gravity = 20.0F;
-    private Vector3 moveDirection = Vector3.zero;
-    void Update()
-    {
-        CharacterController controller = GetComponent<CharacterController>();
-        if (controller.isGrounded)
-        {
-            moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            moveDirection = transform.TransformDirection(moveDirection);
-            moveDirection *= speed;
-            if (Input.GetButton("Jump"))
-                moveDirection.y = jumpSpeed;
+    [SerializeField] private float m_moveSpeed = 2;
+    [SerializeField] private float m_turnSpeed = 200;
+    private float m_currentV = 0;
+    private float m_currentH = 0;
 
+    public float speedH = 2.0f;
+    public float speedV = 2.0f;
+
+    private float yaw = 0.0f;
+    private float pitch = 0.0f;
+
+
+    private readonly float m_interpolation = 10;
+
+    void Update()
+    { 
+        yaw += speedH * Input.GetAxis("Mouse X");
+        pitch -= speedV * Input.GetAxis("Mouse Y");
+
+        transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+
+        if (Input.GetKey(KeyCode.Space)) {
+            transform.position += Vector3.up;
         }
-        moveDirection.y -= gravity * Time.deltaTime;
-        controller.Move(moveDirection * Time.deltaTime);
+
+        float vw = Input.GetAxis("Vertical");
+        float hw = Input.GetAxis("Horizontal");
+
+        m_currentV = Mathf.Lerp(m_currentV, vw, Time.deltaTime * m_interpolation);
+        m_currentH = Mathf.Lerp(m_currentH, hw, Time.deltaTime * m_interpolation);
+
+        transform.position += transform.forward * m_currentV * m_moveSpeed * Time.deltaTime;
+        transform.Rotate(0, m_currentH * m_turnSpeed * Time.deltaTime, 0);
+
     }
 }

@@ -14,9 +14,17 @@ public class hit : MonoBehaviour
             coll.gameObject.GetComponent<Rigidbody>()
                 .AddExplosionForce(100, coll.gameObject.transform.position, 100.0f, 3.0f);
         }
-        else if (coll.gameObject.name == "Rock") {
-            if (transform.parent.Find("Axe").gameObject.activeSelf) {
+        else if (coll.gameObject.name == "Rock")
+        {
+            if (transform.parent.Find("Axe").gameObject.activeSelf)
+            {
                 Destroy(coll.gameObject);
+            }
+        }
+        else if (coll.gameObject.name == "tree") {
+            if (transform.parent.Find("Axe").gameObject.activeSelf)
+            {
+                coll.gameObject.transform.parent.GetComponent<treeFall>().fall();
             }
         }
     }
